@@ -1,0 +1,35 @@
+program ::= cmpdstmt
+
+cmpdstmt ::= stmtlist
+
+stmtlist ::= stmt | stmt ";" stmtlist
+
+stmt ::= simplstmt | structstmt
+
+simplstmt ::= assignstmt | iostmt
+
+assignstmt ::= IDENTIFIER "=" (expression | inputstmt | arraydeclstmt)
+
+arraydeclstmt ::= "list" "(" ")"
+
+expression ::= expression ARITHMETIC term | term
+
+ARITHMETIC ::= "+" | "-" | "*" | "/"
+
+term = IDENTIFIER | integer | string
+
+iostmt ::= inputstmt | outputstmt
+
+inputstmt ::= "input" "(" ")"
+
+outputstmt ::= "print" "(" IDENTIFIER ")"
+
+structstmt ::= cmpdstmt | ifstmt | whilestmt
+
+ifstmt ::= "if" condition ":" stmt ["else" stmt]
+
+whilestmt ::= "while" condition ":" stmt
+
+condition ::= expression RELATION expression
+
+RELATION ::= "<" | "<=" | "==" | ">=" | ">" | "!="
