@@ -1,35 +1,35 @@
-program ::= cmpdstmt
+program = cmpdstmt
 
-cmpdstmt ::= stmtlist
+cmpdstmt = stmtlist
 
-stmtlist ::= stmt | stmt ";" stmtlist
+stmtlist = stmt | stmt ";" stmtlist
 
-stmt ::= simplstmt | structstmt
+stmt = simplstmt | structstmt
 
-simplstmt ::= assignstmt | iostmt
+simplstmt = assignstmt | iostmt
 
-assignstmt ::= IDENTIFIER "=" (expression | inputstmt | arraydeclstmt)
+assignstmt = IDENTIFIER "=" (expression | inputstmt | arraydeclstmt)
 
-arraydeclstmt ::= "list" "(" ")"
+arraydeclstmt = "list" "(" ")"
 
-expression ::= expression ARITHMETIC term | term
+expression = expression ARITHMETIC term | term
 
-ARITHMETIC ::= "+" | "-" | "*" | "/"
+ARITHMETIC = "+" | "-" | "*" | "/"
 
 term = IDENTIFIER | integer | string
 
-iostmt ::= inputstmt | outputstmt
+iostmt = inputstmt | outputstmt
 
-inputstmt ::= "input" "(" ")"
+inputstmt = "input" "(" ")"
 
-outputstmt ::= "print" "(" IDENTIFIER ")"
+outputstmt = "print" "(" IDENTIFIER ")"
 
-structstmt ::= cmpdstmt | ifstmt | whilestmt
+structstmt = cmpdstmt | ifstmt | whilestmt
 
-ifstmt ::= "if" condition ":" stmt ["else" stmt]
+ifstmt = "if" condition ":" stmt ["else" stmt]
 
-whilestmt ::= "while" condition ":" stmt
+whilestmt = "while" condition ":" stmt
 
-condition ::= expression RELATION expression
+condition = expression RELATION expression
 
-RELATION ::= "<" | "<=" | "==" | ">=" | ">" | "!="
+RELATION = "<" | "<=" | "==" | ">=" | ">" | "!="
