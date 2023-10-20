@@ -12,7 +12,7 @@ assignstmt ::= IDENTIFIER "=" (expression | inputstmt | arraydeclstmt)
 
 arraydeclstmt ::= "list" "(" ")"
 
-expression ::= expression ARITHMETIC term | term
+expression ::= ["("] expression [")"] ARITHMETIC term | term
 
 ARITHMETIC ::= "+" | "-" | "*" | "/"
 

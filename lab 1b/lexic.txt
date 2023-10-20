@@ -10,7 +10,7 @@ Lexic:
 
 - operators + - * / = < <= == != >= > #
 
-- separators ( ) [ ] { } : ;
+- separators ( ) [ ] { } : ; ,
 
 - reserved words:
 
