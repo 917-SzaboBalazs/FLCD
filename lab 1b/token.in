@@ -26,6 +26,4 @@ append
 pop
 if
 else
-while 
-IDENTIFIER
-CONSTANT
+while
