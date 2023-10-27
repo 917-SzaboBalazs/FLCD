@@ -1,5 +1,8 @@
 # SymbolTable Class
 
+## Github Link:
+https://github.com/917-SzaboBalazs/FLCD/tree/main/lab2
+
 The `SymbolTable` class is an implementation of a simple hash table that allows storing key-value pairs.
 
 ## Node Class
