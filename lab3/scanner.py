@@ -69,7 +69,3 @@ class Scanner:
 
             for pos, symbol in self.__symbolTable.get_all():
                 print(f"{pos} | {symbol}", file=file)
-
-
-
-
