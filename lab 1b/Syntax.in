@@ -26,9 +26,9 @@ outputstmt = "print" "(" IDENTIFIER ")"
 
 structstmt = cmpdstmt | ifstmt | whilestmt
 
-ifstmt = "if" condition ":" stmt ["else" stmt]
+ifstmt = "if" "(" condition ")" ":" stmt ["else" stmt]
 
-whilestmt = "while" condition ":" stmt
+whilestmt = "while" "(" condition ")" ":" stmt
 
 condition = expression RELATION expression
 

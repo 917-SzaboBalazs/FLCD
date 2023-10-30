@@ -7,7 +7,7 @@ i = 0
 
 n = int(n)
 
-while i < n:
+while (i < n):
   x = input()
   x = int(x)
   arr.append(x)
@@ -15,7 +15,7 @@ while i < n:
 
 i = 0
 
-while i < n:
+while (i < n):
   sum = sum + arr[i]
   i = i + 1
 
