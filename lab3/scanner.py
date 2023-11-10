@@ -59,13 +59,14 @@ class Scanner:
 
     def log_to_file(self):
         with open("pif.out", "w") as file:
-            print("token | ST_pos", file=file)
+            print(f"{'Token': <6} | ST_pos", file=file)
 
             for token, pos in self.__pif.get_all():
-                print(f"{token} | {pos}", file=file)
+                print(f"{token: <6} | {pos}", file=file)
 
         with open("st.out", "w") as file:
-            print("ST_pos | symbol", file=file)
+            print(f"{'ST_pos': <6} | Symbol", file=file)
 
             for pos, symbol in self.__symbolTable.get_all():
-                print(f"{pos} | {symbol}", file=file)
+                print(f"{pos: <6} | {symbol}", file=file)
+
