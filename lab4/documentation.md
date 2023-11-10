@@ -1,5 +1,7 @@
 # Finite Automaton (FA) Class Documentation
 
+**Github Link**: https://github.com/917-SzaboBalazs/FLCD/tree/main/lab4
+
 The `FA` class is designed to represent a Finite Automaton, a mathematical model of computation. This class encapsulates the properties and behavior of a finite automaton, providing methods to interact with its definition and determine if a given sequence is accepted by the automaton.
 
 ## Constructor
