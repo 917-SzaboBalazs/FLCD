@@ -1,0 +1,63 @@
+class FA:
+
+    def __init__(self):
+        self.__input_file = ""
+        self.__all_states = list()
+        self.__input_symbols = list()
+        self.__initial_state = None
+        self.__final_states = list()
+        self.__transition_function = dict()
+
+    def get_input_file(self):
+        return self.__input_file
+
+    def get_all_states(self):
+        return self.__all_states
+
+    def get_input_symbols(self):
+        return self.__input_symbols
+
+    def get_initial_state(self):
+        return self.__initial_state
+
+    def get_final_states(self):
+        return self.__final_states
+
+    def get_transition_function(self):
+        return self.__transition_function
+
+    def read_from_file(self, input_file):
+        with open(input_file) as file:
+            self.__input_file = input_file
+            
+            lines = [line.replace(' ', '').strip() for line in file.readlines()]
+
+            self.__parse_file(lines)
+
+    def __parse_file(self, lines):
+        self.__input_symbols = lines[0].split(',')
+        self.__all_states = lines[1].split(',')
+        self.__initial_state = lines[2]
+        self.__final_states = lines[3].split(',')
+        
+        for i in range(4, 4 + len(self.__input_symbols)):
+            state = lines[i].split(',')[0].replace('(', '').strip()
+            input_symbol = lines[i].split(',')[1].split(')')[0].strip()
+            next_state = lines[i].split('=')[1].strip()
+
+            self.__transition_function[state, input_symbol] = next_state
+
+    def seq_is_accepted(self, seq):
+        seq_list = [ch.replace(' ', '') for ch in seq.split(',')]
+        curr_state = self.__initial_state
+
+        for ch in seq_list:
+            try:
+                next_state = self.__transition_function[curr_state, ch]
+            except KeyError:
+                return False
+            print(next_state)
+
+            curr_state = next_state
+
+        return curr_state == self.__final_states[0]
