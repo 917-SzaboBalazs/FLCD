@@ -77,14 +77,14 @@ result = fa_instance.seq_is_accepted("input_sequence")
 input_file = states | "\n" | symbols | "\n" |  initial_state |
 "\n" | final_states | "\n" | transition_function
 
-letter = "abc..zAB...Z
+letter = "abc..zAB...Z"
 digit = "01..9" 
 
 states = state | {"," | state}
-state = letter | {letter | digit}
+state = letter | digit
 
 symbols = symbol | {"," | symbol}
-symbol = letter | {letter | digit}
+symbol = letter | digit
 
 initial_state = state
 
