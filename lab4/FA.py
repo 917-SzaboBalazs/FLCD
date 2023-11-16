@@ -28,6 +28,7 @@ class FA:
 
     def read_from_file(self, input_file):
         self.__init__()
+        
         with open(input_file) as file:
             self.__input_file = input_file
             
@@ -36,8 +37,8 @@ class FA:
             self.__parse_file(lines)
 
     def __parse_file(self, lines):
-        self.__input_symbols = lines[0].split(',')
-        self.__all_states = lines[1].split(',')
+        self.__all_states = lines[0].split(',')
+        self.__input_symbols = lines[1].split(',')
         self.__initial_state = lines[2]
         self.__final_states = lines[3].split(',')
 
@@ -59,7 +60,6 @@ class FA:
                 next_state = self.__transition_function[curr_state, ch]
             except KeyError:
                 return False
-            print(next_state)
 
             curr_state = next_state
 
