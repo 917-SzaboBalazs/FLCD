@@ -51,7 +51,7 @@ class FA:
             self.__transition_function[state, input_symbol] = next_state
 
     def seq_is_accepted(self, seq):
-        seq_list = [ch.replace(' ', '') for ch in seq.split(',')]
+        seq_list = seq
         curr_state = self.__initial_state
 
         for ch in seq_list:
