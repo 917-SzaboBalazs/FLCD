@@ -1,7 +1,7 @@
 from scanner import Scanner
 
 def main():
-    scanner = Scanner("p1.py")
+    scanner = Scanner("p1err.py")
     scanner.scan()
     scanner.log_to_file()
 

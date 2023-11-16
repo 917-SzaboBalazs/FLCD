@@ -80,16 +80,16 @@ input_file = states | "\n" | symbols | "\n" |  initial_state |
 letter = "abc..zAB...Z"
 digit = "01..9" 
 
-states = state | {"," | state}
+states = state | {("," | state)}
 state = letter | digit
 
-symbols = symbol | {"," | symbol}
+symbols = symbol | {("," | symbol)}
 symbol = letter | digit
 
 initial_state = state
 
-final_states = state | {"," | state}
+final_states = state | {("," | state)}
 
-transition_function = transition | {"\n", transition}
+transition_function = transition | {("\n" | transition)}
 transition = "(" | state | "," | symbol | ")" | "=" | state
 ```
