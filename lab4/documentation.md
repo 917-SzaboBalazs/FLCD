@@ -74,8 +74,7 @@ result = fa_instance.seq_is_accepted("input_sequence")
 
 ## Input file format (EBNF)
 ```
-input_file = states | "\n" | symbols | "\n" |  initial_state |
-"\n" | final_states | "\n" | transition_function
+input_file = states | symbols |  initial_state | final_states | transition_function
 
 letter = "abc..zAB...Z"
 digit = "01..9" 
