@@ -1,7 +1,7 @@
 from symbolTable import SymbolTable
 from pif import Pif
 from tokenizer import Tokenizer
-import re
+from FA import FA
 
 class Scanner:
 
@@ -9,8 +9,12 @@ class Scanner:
         self.__program_name = program_name
         self.__operators = ["+", "-", "*", "/", "=", "<", ">=", "<=", "==", "!=", ">", "#", "(", ")", "[", "]", "{", "}", ":", ";"]
         self.__reserved_words = ['input', 'print', 'list', 'int', 'append', 'pop', 'if', 'else', 'while']
-        self.__identifier_regex = r'\b[a-zA-Z][a-zA-Z0-9]*\b'
-        self.__constant_regex = r'\b[-+]?[1-9][0-9]*\b|\b0\b'
+
+        self.__identifier_regex = FA()
+        self.__identifier_regex.read_from_file("identifier_fa.in")
+
+        self.__constant_regex = FA()
+        self.__constant_regex.read_from_file("integer_constant_fa.in")
 
         self.__symbolTable = SymbolTable()
         self.__pif = Pif()
@@ -23,10 +27,10 @@ class Scanner:
         return token in self.__reserved_words
     
     def _is_identifier(self, token):
-        return bool(re.match(self.__identifier_regex, token))
+        return self.__identifier_regex.seq_is_accepted(token)
 
     def _is_constant(self, token):
-        return bool(re.match(self.__constant_regex, token))
+        return self.__constant_regex.seq_is_accepted(token)
 
     def scan(self):
         tokens = self.__tokenizer.get_tokens()
