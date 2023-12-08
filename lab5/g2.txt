@@ -1,0 +1,41 @@
+program cmpdtst stmtlist stmt simplstmt strucktstmt assignstmt iostmt IDENTIFIER expression inputstmt arraydeclstmt arithmetic term integer string outputstmt ifstmt whilestmt condition RELATION 
+program -> cmpdstmt
+cmpdstmt -> stmtlist
+stmtlist -> stmt
+stmtlist -> stmt ; stmtlist
+stmt -> simplstmt
+stmt -> sturckstmt
+simplstmt -> assignstmt
+simplstmt -> iostmt
+assignstmt -> IDENTIFIER = expression
+assignstmt -> IDENTIFIER = inputstmt
+assignstmt -> IDENTIFIER = arraydeclstmt
+arraydeclstmt -> list ( )
+expression -> expression arithmetic term
+expression -> expression term
+expression -> arithmetic term
+expression -> term
+arithmetic -> +
+arithmetic -> -
+arithmetic -> *
+arithmetic -> /
+term -> IDENTIFIER
+term -> integer
+term -> string
+iostmt -> inputstmt
+iostmt -> outputstmt
+inputstmt -> input ( )
+outputstmt -> print ( IDENTIFIER )
+structstmt -> cmpdstmt
+structstmt -> ifstmt
+structstmt -> whilestmt
+ifstmt -> if ( condition ) : stmt 
+ifstmt -> if ( condition ) : stmt else stmt
+whilestmt -> while ( condition ) : stmt
+condition -> expression RELATION expression
+RELATION -> <
+RELATION -> <=
+RELATION -> ==
+RELATION -> >=
+RELATION -> >
+RELATION -> !=
