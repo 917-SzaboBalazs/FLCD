@@ -1,5 +1,7 @@
 # Grammar Class
 
+https://github.com/917-SzaboBalazs/FLCD/tree/main/lab5
+
 ## Description
 
 The `Grammar` class represents a context-free grammar (CFG) and provides methods to access information about the grammar. It reads grammar specifications from a file, initializes the object, and checks if it is a context-free grammar.
