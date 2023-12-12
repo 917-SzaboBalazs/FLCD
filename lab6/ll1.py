@@ -31,7 +31,7 @@ class Ll1:
             first_col[symbol] = ""
 
         for key, value in reversed(productions.items()):
-            first_terminal = self.__get_first_terminals(lhs=key, rhs=value)
+            first_terminal = self.__get_first_terminals(rhs=value)
             
             if len(first_terminal) > 0:
                 first_col[key[0]] = str(first_terminal)
@@ -43,7 +43,7 @@ class Ll1:
 
     def __build_follow(self):
         non_terminals = self.gramamr.get_nonterminals()
-        productions = self.gramamr.get_productions()
+        productions = self.gramamr.get_productions().get_all()
         follow_col = dict()
 
         for symbol in non_terminals:
@@ -53,7 +53,7 @@ class Ll1:
 
         return follow_col
     
-    def __get_first_terminals(self, lhs, rhs):
+    def __get_first_terminals(self, rhs):
         terminals = self.gramamr.get_terminals()
         result = list()
 
