@@ -12,6 +12,9 @@ class ProductionSet:
     def __setitem__(self, key, value):
         self.__productions[key] = value
 
+    def __len__(self):
+        return len(self.__productions)
+
     def keys(self):
         return self.__productions.keys()
     
