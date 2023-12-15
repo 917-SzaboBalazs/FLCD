@@ -14,7 +14,8 @@ class Grammar:
 
         self.__read_from_file()
         self.__is_cfg = self.__check_if_cfg()
-
+        
+    
     def get_input_file(self):
         return self.__input_file
     
