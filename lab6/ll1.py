@@ -50,7 +50,7 @@ class Ll1:
         productions = self.gramamr.get_productions().get_all()
 
         while True:
-            prev_follow_col = {k: set(v) for k, v in follow_col.items()}  # Store the previous state of follow_col
+            prev_follow_col = {k: set(v) for k, v in follow_col.items()}
 
             for key, value in productions.items():
                 for i, symbol in enumerate(value):
@@ -58,24 +58,19 @@ class Ll1:
                         next_symbols = value[i + 1:] if i + 1 < len(value) else []
                         first_of_next = self.__get_first_terminals(next_symbols)
 
-                        # Update follow_col[symbol] with first_of_next
                         follow_col[symbol] |= first_of_next - {''}
 
-                        # If epsilon is in first_of_next, add follow_col[key] to follow_col[symbol]
                         if '' in first_of_next:
                             follow_col[symbol] |= follow_col[key[0]]
 
-                        # If the next symbol is a non-terminal, update its FOLLOW set with FOLLOW set of the current symbol
                         if i + 1 < len(value) and value[i + 1] in non_terminals:
                             follow_col[value[i + 1]] |= follow_col[symbol]
 
             if prev_follow_col == follow_col:
-                break  # If there are no changes, exit the loop
+                break
 
-        # Convert the sets to lists for each non-terminal symbol
         follow_col = {k: list(v) for k, v in follow_col.items()}
 
-        # Print statements for debugging
         print("Follow sets during computation:")
         for symbol, follow_set in follow_col.items():
             print(f"{symbol}: {follow_set}")
