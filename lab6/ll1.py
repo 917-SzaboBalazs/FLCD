@@ -71,10 +71,6 @@ class Ll1:
 
         follow_col = {k: list(v) for k, v in follow_col.items()}
 
-        print("Follow sets during computation:")
-        for symbol, follow_set in follow_col.items():
-            print(f"{symbol}: {follow_set}")
-
         return follow_col
 
 
