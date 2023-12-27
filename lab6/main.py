@@ -1,8 +1,8 @@
 from ll1 import Ll1
 
 def main():
-    input_file = "g1.txt"
-    input_string = ""
+    input_file = "g2.txt"
+    input_string = "bcbc"
 
     ll1 = Ll1(input_file=input_file)
     result = ll1.parse(input=input_string)
