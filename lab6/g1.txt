@@ -1,8 +1,13 @@
-S A B C
-a b c
+S A B C D E
+a b c d e
 S
-S -> a A
-A -> B
-B -> c C
-B -> b B
+S -> A B C D E
+A -> a
+A -> epsilon
+B -> b
+B -> epsilon
 C -> c
+D -> d
+D -> epsilon
+E -> e
+E -> epsilon
