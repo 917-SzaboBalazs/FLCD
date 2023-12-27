@@ -1,4 +1,5 @@
 from grammar import Grammar
+import itertools
 
 class Ll1:
 
@@ -12,6 +13,9 @@ class Ll1:
 
     def first(self, symbol):
         return self.__first_col[symbol]
+    
+    def follow(self, symbol):
+        return self.__follow_col[symbol]
     
     def grammar(self):
         return self.__grammar
@@ -77,9 +81,6 @@ class Ll1:
         return True
     
     def __build_table(self):
-        if not self.__check_ll1():
-            raise ValueError("Grammar is not LL(1)")
-
         self.__build_first()
         self.__build_follow()
         self.__build_parsing_table()
@@ -96,13 +97,17 @@ class Ll1:
         for lhs, rhs in reversed(productions.items()):
             for rule in rhs:
                 if rule[0] in terminals:
-                    first_col[lhs[0]].add(str(rule[0]))
+                    first_col[lhs[0]].add(rule[0])
 
                 elif rule[0] in non_terminals:
-                    first_col[lhs[0]].add(str(first_col[rule[0]]))
+                    first_col[lhs[0]] = first_col[lhs[0]].union(first_col[rule[0]])
+
+                elif rule[0] == 'epsilon':
+                    first_col[lhs[0]].add('epsilon')
 
                 else:
                     raise ValueError("Invalid symbol in production rule: {}".format(rule[0]))
+
 
     def __build_follow(self):
         non_terminals = self.__grammar.get_nonterminals()
@@ -125,17 +130,21 @@ class Ll1:
                         if symbol == key[0]:
 
                             if i == len(rule) - 1:
-                                follow_col[symbol].add(str(follow_col[lhs[0]]))
+                                follow_col[symbol] = follow_col[symbol].union(follow_col[lhs[0]])
 
                             elif rule[i + 1] in terminals:
-                                follow_col[symbol].add(str(rule[i + 1]))
+                                follow_col[symbol].add(rule[i + 1])
 
                             elif rule[i + 1] in non_terminals:
-                                follow_col[symbol].add(str(first_col[rule[i + 1]]))
+                                if 'epsilon' in first_col[rule[i + 1]]:
+                                    follow_col[symbol] = follow_col[symbol].union(first_col[rule[i + 1]]) - {'epsilon'}
+                                    follow_col[symbol] = follow_col[symbol].union(follow_col[lhs[0]])
+                                else:
+                                    follow_col[symbol] = follow_col[symbol].union(first_col[rule[i + 1]])
                             
                             else:
                                 raise ValueError("Invalid symbol in production rule: {}".format(rule[i + 1]))
-                            
+                                        
     def __build_parsing_table(self):
         non_terminals = self.__grammar.get_nonterminals()
         terminals = self.__grammar.get_terminals()
@@ -156,6 +165,10 @@ class Ll1:
 
                 elif rule[0] in non_terminals:
                     for terminal in self.__first_col[rule[0]]:
+                        self.__parsing_table[lhs[0]][terminal] = rule
+
+                elif rule[0] == 'epsilon':
+                    for terminal in self.__follow_col[lhs[0]]:
                         self.__parsing_table[lhs[0]][terminal] = rule
 
                 else:

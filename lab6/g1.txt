@@ -1,8 +1,11 @@
-S A B C
-a b c
-S
-S -> a A
-A -> B
-B -> c C
-B -> b B
-C -> c
+E E' T T' F
++ * ( ) id
+E
+E -> T E'
+E' -> + T E'
+E' -> epsilon
+T -> F T'
+T' -> * F T'
+T' -> epsilon
+F -> id
+F -> ( E )
