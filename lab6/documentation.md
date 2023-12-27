@@ -1,5 +1,12 @@
 # LL1 Class Documentation
 
+### Github
+https://github.com/917-SzaboBalazs/FLCD/tree/main/lab6
+
+### Made by
+Szabó Balázs <br>
+Tankó-Gábor Tamás
+
 The `Ll1` class is designed for constructing and working with LL(1) parsing tables. It includes methods for obtaining the First and Follow sets of non-terminals, as well as retrieving information from the constructed LL(1) parsing table.
 
 ## Constructor

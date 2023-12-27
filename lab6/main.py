@@ -2,12 +2,15 @@ from grammar import Grammar
 from ll1 import Ll1
 
 def test(parser):
-    print("Symbol | First       | Follow")
+    print(parser.get_grammar().get_productions())
+
+    print("{:<6} | {:<20} | {:<12}".format("Symbol", "First", "Follow"))  # Align the column headers
 
     for symbol in parser.get_grammar().get_nonterminals():
         first = parser.first(symbol)
         follow = parser.follow(symbol)
-        print(f"{symbol:<6} | {first:<11} | {follow}")
+        
+        print("{:<6} | {:<20} | {:<12}".format(symbol, str(first), str(follow)))  # Convert first and follow sets to strings before formatting
 
 
 if __name__ == "__main__":
