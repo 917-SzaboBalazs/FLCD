@@ -47,37 +47,12 @@ class Ll1:
 
                 input_index += 1
 
+            elif top == 'epsilon':
+                continue
+
             else:
                 raise ValueError("Invalid symbol in stack: {}".format(top))
 
-        return True
-    
-    def __check_ll1(self):
-        if not self.__grammar.check_cfg():
-            return False
-
-        productions = self.__grammar.get_productions().get_all()
-
-        for rhs in productions.values():
-            no_non_terminals = 0
-            terminals = dict()
-
-            for rule in rhs:
-                if rule[0] in self.__grammar.get_nonterminals():
-                    no_non_terminals += 1
-
-                    if no_non_terminals > 1:
-                        return False
-                    
-                    elif no_non_terminals == 1 and len(rhs) > 1:
-                        return False
-                    
-                elif rule[0] in self.__grammar.get_terminals():
-                    terminals[rule[0]] = terminals.get(rule[0], 0) + 1
-
-                    if terminals[rule[0]] > 1:
-                        return False
-                    
         return True
     
     def __build_table(self):
@@ -115,6 +90,7 @@ class Ll1:
         productions = self.__grammar.get_productions().get_all()
         first_col = self.__first_col
         follow_col = self.__follow_col
+
         for symbol in non_terminals:
             follow_col[symbol] = set()
 
@@ -160,15 +136,26 @@ class Ll1:
 
         for lhs, rhs in productions.items():
             for rule in rhs:
+
                 if rule[0] in terminals:
+                    if self.__parsing_table[lhs[0]][rule[0]] is not None:
+                        raise ValueError(rule[0] + " Grammar is not LL(1)")
+
                     self.__parsing_table[lhs[0]][rule[0]] = rule
 
                 elif rule[0] in non_terminals:
                     for terminal in self.__first_col[rule[0]]:
+                        if self.__parsing_table[lhs[0]][terminal] is not None:
+                            raise ValueError(rule[0] + " Grammar is not LL(1)")
+
                         self.__parsing_table[lhs[0]][terminal] = rule
 
                 elif rule[0] == 'epsilon':
                     for terminal in self.__follow_col[lhs[0]]:
+
+                        if self.__parsing_table[lhs[0]][terminal] is not None:
+                            raise ValueError(rule[0] + " Grammar is not LL(1)")
+
                         self.__parsing_table[lhs[0]][terminal] = rule
 
                 else:
