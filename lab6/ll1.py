@@ -20,8 +20,33 @@ class Ll1:
         return self.__parsing_table
     
     def parse(self, input):
-        # TODO: Implement parsing algorithm
-        pass
+        input = input + '$'
+        stack = list()
+        stack.append('$')
+        stack.append(self.__grammar.get_input_symbol())
+        input_index = 0
+
+        while len(stack) > 0:
+            top = stack.pop()
+
+            if top in self.__grammar.get_nonterminals():
+                if self.__parsing_table[top][input[input_index]] is None:
+                    return False
+
+                for symbol in reversed(self.__parsing_table[top][input[input_index]]):
+                    stack.append(symbol)
+
+
+            elif top in [*self.__grammar.get_terminals(), '$']:
+                if top != input[input_index]:
+                    return False
+
+                input_index += 1
+
+            else:
+                raise ValueError("Invalid symbol in stack: {}".format(top))
+
+        return True
     
     def __check_ll1(self):
         if not self.__grammar.check_cfg():
