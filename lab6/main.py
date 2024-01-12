@@ -10,11 +10,13 @@ def main():
 
     if result:
         print(f"Input string {input_string} is accepted by the grammar {input_file}")
-        parser_output = ParserOutput(ll1.get_parsed_table())
-        parser_output.print_to_screen()
-        parser_output.print_to_file('output.txt')
+        
     else:
         print(f"Input string {input_string} is NOT accepted by the grammar {input_file}")
+
+    parser_output = ParserOutput(ll1.get_parsed_table())
+    parser_output.print_to_screen()
+    parser_output.print_to_file('output.txt')
 
 if __name__ == "__main__":
     main()
