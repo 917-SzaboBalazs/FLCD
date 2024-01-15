@@ -1,0 +1,18 @@
+var a, b, c;
+
+a = readint();
+b = readint();
+c = readint();
+
+var 1max = a;
+
+if (b > 1max) {
+  max = b;
+}
+
+if (c > 1max) {
+  max = c;
+}
+
+print(1max);
+
