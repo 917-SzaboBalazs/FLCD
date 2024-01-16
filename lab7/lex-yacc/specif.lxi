@@ -9,13 +9,13 @@ ID [a-z][a-z0-9]*
 
 %% 
 
+{DIGIT}+ printf("An integer: %s (%d)\n", yytext, atoi( yytext ) );
+
 {DIGIT}+"."{DIGIT}*  printf( "A float: %s (%g)\n", yytext, atof( yytext ) );  
 
 "if"|"readint"|"var"|"list"|"append"|"while"|"print"  printf( "A reserved word: %s\n", yytext );  
 
 {ID} printf( "An identifier: %s\n", yytext );
-
-{DIGIT}+ printf("An integer %s (%d)\n", yytext, atoi( yytext ) );
 
 "+"|"-"|"*"|"/"|","|"="|"("|")"|"{"|"}"|";"|"<"|">"|"<="|">="|"=="|"!="|"."|"["|"]" printf( "An operator: %s\n", yytext ); 
 
@@ -33,4 +33,5 @@ int main(int argc, char **argv )
     else 
      yyin = stdin; 
     yylex(); 
-} 
+}
+
