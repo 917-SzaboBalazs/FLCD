@@ -1,0 +1,22 @@
+var n, arr;
+
+n = readint();
+arr = list();
+
+var sum = 0, x = 0, i = 0;
+
+while (i < n) {
+  x = readint();
+  arr.append(x);
+  i = i + 1;
+}
+
+i = 0;
+
+while (i < n) {
+  sum = sum + arr[i];
+  i = i + 1;
+}
+
+print(sum);
+
