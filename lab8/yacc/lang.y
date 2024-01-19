@@ -1,207 +1,149 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
+
 #define YYDEBUG 1
-
-#define TIP_INT 1
-#define TIP_REAL 2
-#define TIP_CAR 3
-
-
 %}
 
+%token ARR;
+%token INT;
+%token BOOL;
+%token CHAR;
+%token STRING;
+%token IF;
+%token ELSE;
+%token WHILE;
+%token PRINT;
+%token READINT;
+%token READSTRING;
+%token SET;
+%token GET;
 
-%token BEGINN
-%token CONST
-%token DO
-%token ELSE
-%token END
-%token IF
-%token PRINT
-%token PROGRAM
-%token READ
-%token THEN
-%token VAR
-%token WHILE
+%token BOOLCONST;
+%token CHARCONST;
+%token STRINGCONST;
+%token IDENTIFIER;
+%token INTCONST;
 
-%token ID
-%token <p_val> CONST_INT
-%token <p_val> CONST_REAL
-%token <p_val> CONST_CAR
-%token CONST_SIR
+%token PLUS;
+%token MINUS;
+%token TIMES;
+%token DIV;
+%token MOD;
+%token EQ;
+%token BIGGER;
+%token BIGGEREQ;
+%token LESS;
+%token LESSEQ;
+%token EQQ;
+%token NEG;
+%token AND;
+%token OR;
 
-%token CHAR
-%token INTEGER
-%token REAL
+%token SEMICOLON;
+%token OPEN;
+%token CLOSE;
+%token SOPEN;
+%token SCLOSE;
+%token BRACKETOPEN;
+%token BRACKETCLOSE;
+%token COMMA;
+%token QUOTE;
+%token SIMPLEQUOTE;
 
-%token ATRIB
-%token NE
-%token LE
-%token GE
-
-%left '+' '-'
-%left DIV MOD '*' '/'
-%left OR
-%left AND
-%left NOT
-
-%type <l_val> expr_stat factor_stat constanta
-%%
-prog_sursa:	PROGRAM ID ';' bloc '.'
-		;
-bloc:		sect_const sect_var instr_comp
-		;
-sect_const:	/* empty */
-		| CONST lista_const
-		;
-lista_const:	decl_const
-		| lista_const decl_const
-		;
-sect_var:	/* empty */
-		| VAR lista_var
-		;
-lista_var:	decl_var
-		| lista_var decl_var
-		;
-decl_const:	ID '=' {sp=0;} expr_stat ';'	{
-		printf("*** %d %g ***\n", $4);
-					}
-		;
-decl_var:	lista_id ':' tip ';'
-		;
-lista_id:	ID
-		| lista_id ',' ID
-		;
-tip:		tip_simplu
-		;
-tip_simplu:	INTEGER
-		| REAL
-		| CHAR
-		;
-expr_stat:	factor_stat
-		| expr_stat '+' expr_stat	{
-			if($1==TIP_REAL || $3==TIP_REAL) $$=TIP_REAL;
-			else if($1==TIP_CAR) $$=TIP_CAR;
-				else $$=TIP_INT;
-						}
-		| expr_stat '-' expr_stat	{
-			if($1==TIP_REAL || $3==TIP_REAL) $$=TIP_REAL;
-			else if($1==TIP_CAR) $$=TIP_CAR;
-				else $$=TIP_INT;
-						}
-		| expr_stat '*' expr_stat	{
-			if($1==TIP_REAL || $3==TIP_REAL) $$=TIP_REAL;
-			else if($1==TIP_CAR) $$=TIP_CAR;
-				else $$=TIP_INT;
-						}
-		| expr_stat '/' expr_stat	
-		| expr_stat DIV expr_stat
-		| expr_stat MOD expr_stat
-		;
-factor_stat:	ID		{}
-		| constanta
-		| '(' expr_stat ')'	{$$ = $2;}
-		;
-constanta:	CONST_INT	{
-			$$ = TIP_INT;
-				}
-		| CONST_REAL	{
-			$$ = TIP_REAL;
-				}
-		| CONST_CAR	{
-			$$ = TIP_CAR;
-				}
-		;
-instr_comp:	BEGINN lista_instr END
-		;
-lista_instr:	instr
-		| lista_instr ';' instr
-		;
-instr:		/* empty */
-		| instr_atrib
-		| instr_if
-		| instr_while
-		| instr_comp
-		| instr_read
-		| instr_print
-		;
-instr_atrib:	variabila ATRIB expresie
-		;
-variabila:	ID
-		| ID '[' expresie ']'
-		| ID '.' ID
-		;
-expresie:	factor
-		| expresie '+' expresie
-		| expresie '-' expresie
-		| expresie '*' expresie
-		| expresie '/' expresie
-		| expresie DIV expresie
-		| expresie MOD expresie
-		;
-factor:		ID
-		| constanta {}
-		| ID '(' lista_expr ')'
-		| '(' expresie ')'
-		| ID '[' expresie ']'
-		| ID '.' ID
-		;
-lista_expr:	expresie
-		| lista_expr ',' expresie
-		;
-instr_if:	IF conditie THEN instr ramura_else
-		;
-ramura_else:	/* empty */
-		ELSE instr
-		;
-conditie:	expr_logica
-		| expresie op_rel expresie
-		;
-expr_logica:	factor_logic
-		| expr_logica AND expr_logica
-		| expr_logica OR expr_logica
-		;
-factor_logic:	'(' conditie ')'
-		| NOT factor_logic
-		;
-op_rel:		'='
-		| '<'
-		| '>'
-		| NE
-		| LE
-		| GE
-		;
-instr_while:	WHILE conditie DO instr
-		;
-instr_print:	PRINT '(' lista_elem ')'
-		;
-lista_elem:	element
-		| lista_elem ',' element
-		;
-element:	expresie
-		| CONST_SIR
-		;
-instr_read:	READ '(' lista_variab ')'
-		;
-lista_variab:	variabila
-		| lista_variab ',' variabila
-		;
+%start program 
 
 %%
 
+program : declaration statement {printf("program -> declaration statement\n");} ;
+declaration : simpledeclaration SEMICOLON declaration {printf("declaration -> simpledeclaration ; declaration\n");} ;
+            | arraydeclaration SEMICOLON declaration {printf("declaration -> arraydeclaration ; declaration\n");};
+            |   {printf("declaration -> epsilon\n");} ;
+simpledeclaration : type identifierlist {printf("simpledeclaration -> type identifierlist\n");} ;
+type : INT {printf("type -> int\n");} ;
+     | BOOL {printf("type -> bool\n");} ;
+     | CHAR {printf("type -> char\n");} ;
+     | STRING {printf("type -> string\n");} ;
+identifierlist : IDENTIFIER {printf("identifierlist -> IDENTIFIER\n");} ;
+                | IDENTIFIER EQ expression {printf("identifierlist -> IDENTIFIER = expression\n");} ;
+                | IDENTIFIER COMMA identifierlist {printf("identifierlist -> IDENTIFIER , identifierlist\n");} ;
+                | IDENTIFIER EQ expression COMMA identifierlist {printf("identifierlist -> IDENTIFIER = expression\n");} ;
+expression : intexpression {printf("expression -> intexpression\n");} ;
+            | boolexpression {printf("expression -> boolexpression\n");} ;
+            | charexpression {printf("expression -> charexpression\n");} ;
+            | stringexpression {printf("expression -> stringexpression\n");} ;
+simpleintexpression : INTCONST {printf("simpleintexpression -> INTCONST\n");} ;
+                     | IDENTIFIER {printf("simpleintexpression -> IDENTIFIER\n");} ;
+intexpression : simpleintexpression {printf("intexpression -> simpleintexpression\n");} ;
+                | OPEN simpleintexpression TIMES intexpression CLOSE {printf("intexpression -> ( simpleintexpression * intexpression )\n");} ;
+                | OPEN simpleintexpression DIV intexpression CLOSE {printf("intexpression -> ( simpleintexpression / intexpression )\n");} ;
+                | OPEN simpleintexpression MOD intexpression CLOSE {printf("intexpression -> ( simpleintexpression mod intexpression )\n");} ;
+                | OPEN simpleintexpression PLUS intexpression CLOSE {printf("intexpression -> ( simpleintexpression + intexpression )\n");} ;
+                | OPEN simpleintexpression MINUS intexpression CLOSE {printf("intexpression -> ( simpleintexpression - intexpression )\n");} ;
+                | simpleintexpression TIMES intexpression {printf("intexpression -> simpleintexpression * intexpression\n");} ;
+                | simpleintexpression DIV intexpression {printf("intexpression -> simpleintexpression / intexpression\n");} ;
+                | simpleintexpression MOD intexpression {printf("intexpression -> simpleintexpression mod intexpression\n");} ;
+                | simpleintexpression PLUS intexpression {printf("intexpression -> simpleintexpression + intexpression\n");} ;
+                | simpleintexpression MINUS intexpression {printf("intexpression -> simpleintexpression - intexpression\n");} ;
+simpleboolexpression : BOOLCONST {printf("simpleboolexpression -> BOOLCONST\n");} ;
+                        | NEG IDENTIFIER {printf("simpleboolexpression -> ! IDENTIFIER\n");} ;
+                        | IDENTIFIER {printf("simpleboolexpression -> IDENTIFIER\n");} ;
+boolexpression : simpleboolexpression {printf("boolexpression -> simpleboolexpression\n");} ;
+                | OPEN simpleboolexpression AND boolexpression CLOSE {printf("boolexpression -> ( simpleboolexpression && boolexpression )\n");} ;
+                | OPEN simpleboolexpression OR boolexpression CLOSE {printf("boolexpression -> ( simpleboolexpression || boolexpression )\n");} ;
+                | OPEN simpleboolexpression EQQ boolexpression CLOSE {printf("boolexpression -> ( simpleboolexpression == boolexpression )\n");} ;
+                | OPEN intexpression EQQ intexpression CLOSE {printf("boolexpression -> ( intexpression == intexpression )\n");} ;
+                | OPEN intexpression LESS intexpression CLOSE {printf("boolexpression -> ( intexpression < intexpression )\n");} ;
+                | OPEN intexpression LESSEQ intexpression CLOSE {printf("boolexpression -> ( intexpression <= intexpression )\n");} ;
+                | OPEN intexpression BIGGER intexpression CLOSE {printf("boolexpression -> ( intexpression > intexpression )\n");} ;
+                | OPEN intexpression BIGGEREQ intexpression CLOSE {printf("boolexpression -> ( intexpression >= intexpression )\n");} ;
+                | simpleboolexpression AND boolexpression {printf("boolexpression -> simpleboolexpression && boolexpression\n");} ;
+                | simpleboolexpression OR boolexpression {printf("boolexpression -> simpleboolexpression || boolexpression\n");} ;
+                | simpleboolexpression EQQ boolexpression {printf("boolexpression -> simpleboolexpression == boolexpression\n");} ;
+                | intexpression EQQ intexpression {printf("boolexpression -> intexpression == intexpression\n");} ;
+                | intexpression LESS intexpression {printf("boolexpression -> intexpression < intexpression\n");} ;
+                | intexpression LESSEQ intexpression {printf("boolexpression -> intexpression <= intexpression\n");} ;
+                | intexpression BIGGER intexpression {printf("boolexpression -> intexpression > intexpression\n");} ;
+                | intexpression BIGGEREQ intexpression {printf("boolexpression -> intexpression >= intexpression\n");} ;
+charexpression : CHARCONST {printf("charexpression -> CHARCONST\n");} ;
+simplestringexpression : STRINGCONST {printf("simplestringexpression -> STRINGCONST\n");} ;
+                         | IDENTIFIER {printf("simplestringexpression -> IDENTIFIER\n");} ;
+stringexpression : simplestringexpression {printf("stringexpression -> simplestringexpression\n");} ;
+                 | OPEN simplestringexpression PLUS stringexpression CLOSE {printf("stringexpression -> ( simplestringexpression + stringexpression )\n");} ;
+                 | simplestringexpression PLUS stringexpression {printf("stringexpression -> simplestringexpression + stringexpression\n");} ;
+arraydeclaration : ARR SOPEN type SCLOSE SOPEN INTCONST SCLOSE simpleidentifierlist {printf("arraydeclaration -> array [ type ] [ INTCONST ] simpleidentifierlist\n");} ;
+simpleidentifierlist : IDENTIFIER {printf("simpleidentifierlist -> IDENTIFIER\n");} ;
+                     | IDENTIFIER COMMA simpleidentifierlist {printf("simpleidentifierlist -> IDENTIFIER , simpleidentifierlist\n");} ;
+statement : assignstatement SEMICOLON statement {printf("statement -> assignstatement ; statement\n");} ;
+            | ifstatement statement {printf("statement -> ifstatement statement\n");} ;
+            | whilestatement statement {printf("statement -> whilestatement statement\n");} ;
+            | functionstatement SEMICOLON statement {printf("statement -> functionstatement ; statement\n");} ;
+            |   {printf("statement -> epsilon\n");} ;
+assignstatement : IDENTIFIER EQ expression {printf("assignstatement -> IDENTIFIER = expression\n");} ;
+                 | IDENTIFIER EQ functionstatement {printf("assignstatement -> IDENTIFIER = functionstatement\n");} ;
+ifstatement : IF OPEN boolexpression CLOSE BRACKETOPEN statement BRACKETCLOSE {printf("ifstatement -> if ( boolexpression ) { statement }\n");} ;
+             | IF OPEN boolexpression CLOSE BRACKETOPEN statement BRACKETCLOSE ELSE BRACKETOPEN statement BRACKETCLOSE {printf("ifstatement -> if ( boolexpression ) { statement } else { statement }\n");} ;
+whilestatement : WHILE OPEN boolexpression CLOSE BRACKETOPEN statement BRACKETCLOSE {printf("whilestatement -> while ( boolexpression ) { statement }\n");} ;
+functionstatement : functionname OPEN expressionlist CLOSE {printf("functionstatement -> functionname ( expressionlist )\n");} ;
+                    | functionname OPEN CLOSE {printf("functionstatement -> functionname (  )\n");} ;
+functionname : READINT {printf("functionname -> readInt\n");} ;
+            | READSTRING {printf("functionname -> readString\n");} ;
+            | GET {printf("functionname -> get\n");} ;
+            | SET {printf("functionname -> set\n");} ;
+            | PRINT {printf("functionname -> print\n");} ;
+expressionlist : expression {printf("expressionlist -> expression\n");} ;
+                 | expression COMMA expressionlist {printf("expressionlist -> expression , expressionlist\n");} ;
+
+%%
 yyerror(char *s)
-{
-  printf("%s\n", s);
+{	
+	printf("%s\n",s);
 }
 
 extern FILE *yyin;
 
 main(int argc, char **argv)
 {
-  if(argc>1) yyin = fopen(argv[1], "r");
-  if((argc>2)&&(!strcmp(argv[2],"-d"))) yydebug = 1;
-  if(!yyparse()) fprintf(stderr,"\tO.K.\n");
-}
-
-
-
+	if(argc>1) yyin =  fopen(argv[1],"r");
+	if(!yyparse()) fprintf(stderr, "\tOK\n");
+} 
